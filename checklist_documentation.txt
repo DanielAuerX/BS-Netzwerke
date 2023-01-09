@@ -1,68 +1,68 @@
 Aspekte														Stand
 
-*Deckblatt*
+Deckblatt
 
-Thema
++ Thema
 
-Wer hat die Dokumentation erstellt?
++ Wer hat die Dokumentation erstellt?
 
-Für wen ist die Dokumentation?
++ Für wen ist die Dokumentation?
 
-Datum und Ort
++ Datum und Ort
 
 
 
 Inhaltsverzeichnis
 
-Gliederungspunkte vollständig und übersichtlich 
++ Gliederungspunkte vollständig und übersichtlich 
 
-Gliederungspunkte stimmen mit den im Text verwendeten überein
++ Gliederungspunkte stimmen mit den im Text verwendeten überein
 
-Kapitelnummerierung und entsprechende Seitenzählung korrekt
++ Kapitelnummerierung und entsprechende Seitenzählung korrekt
 
 
 
 Einleitung
 
-Welche Ziele haben Sie? 
++ Welche Ziele haben Sie? 
 
-Welches Thema? Worum geht es?
++ Welches Thema? Worum geht es?
 
 
 
 Hauptteil - Besprechen Sie den Inhalt der Dokumentation mit Ihrem Lehrendenteam. Hier ein paar Beispiele:
 
-Ist-Analyse  - Sie erheben und untersuchen den gegenwärtigen Ist-Zustand.
++ Ist-Analyse  - Sie erheben und untersuchen den gegenwärtigen Ist-Zustand.
 
-Netzwerkplan  - Sie schreiben eine kurze Einführung und fügen den Netzwerkplan ein.
++ Netzwerkplan  - Sie schreiben eine kurze Einführung und fügen den Netzwerkplan ein.
 
-IPv4-Adressierungsschema - Sie schreiben eine kurze Einführung und fügen das IPv4-Adressierungsschema ein.
++ IPv4-Adressierungsschema - Sie schreiben eine kurze Einführung und fügen das IPv4-Adressierungsschema ein.
 
-Switchkonfiguration inkl. Portbelegung - Sie schreiben eine kurze Einführung und fügen die Switchkonfiguration ein.
++ Switchkonfiguration inkl. Portbelegung - Sie schreiben eine kurze Einführung und fügen die Switchkonfiguration ein.
 
-Soll-Konzept - Sie erstellen ein Konzept mit Ihren Lösungsansätzen.
++ Soll-Konzept - Sie erstellen ein Konzept mit Ihren Lösungsansätzen.
 
 
 
 Schluss / Fazit
 
-Kurze Zusammenfassung
++ Kurze Zusammenfassung
 
-Ergebnisse (SOLL-/IST-Vergleich)
++ Ergebnisse (SOLL-/IST-Vergleich)
 	
 
 Quellen
 	
-Vollständige Angabe aller im Text verwendeten Quellen (direkte Angabe der Quelle im Text selbst - z. B. Fußnote - und im Quellenverzeichnis)
++ Vollständige Angabe aller im Text verwendeten Quellen (direkte Angabe der Quelle im Text selbst - z. B. Fußnote - und im Quellenverzeichnis)
 
-Bei Internetquellen die Angabe des Datums, wann man die Seite besucht hat
++ Bei Internetquellen die Angabe des Datums, wann man die Seite besucht hat
 	
 
 
 
 Sprachnorm und Sprachgestaltung
 	
-Korrekte Rechtschreibung, Kommasetzung und Grammatik
++ Korrekte Rechtschreibung, Kommasetzung und Grammatik
 	
-Sprachniveau: selbständige sprachliche Gestaltung, angemessener Ausdruck, zielgruppenadäquat geschrieben
++ Sprachniveau: selbständige sprachliche Gestaltung, angemessener Ausdruck, zielgruppenadäquat geschrieben
 	
