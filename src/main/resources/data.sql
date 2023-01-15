@@ -9,9 +9,8 @@ CREATE TABLE switch(
 );
 
 CREATE TABLE port(
-                       id UUID NOT NULL PRIMARY KEY,
-                       switch UUID NOT NULL, /* foreign key*/
-                       name VARCHAR(100) NOT NULL,
+                       switch UUID NOT NULL PRIMARY KEY, /* foreign key*/
+                       name VARCHAR(100) NOT NULL PRIMARY KEY,
                        portMode VARCHAR(100) NOT NULL
 
 );
@@ -24,14 +23,23 @@ CREATE TABLE host(
                        defaultGateway uuid
 );
 
+CREATE TABLE network(
+                       id UUID NOT NULL PRIMARY KEY,
+                       name VARCHAR(100) NOT NULL,
+                       location VARCHAR(100) NOT NULL
+
+);
+
 INSERT INTO network (name, location) VALUES ('IT','Steindamm 80');
-INSERT INTO network (name, location) VALUES ('Marketing','Steindamm 80');
+INSERT INTO network (name, location) VALUES ('Marketing','Steindamm 71');
 INSERT INTO switch (name) VALUES ('IT-001');
 INSERT INTO host (mac_id, ip, name, network_id, system) VALUES ('00:00:5e:00:53:af', '192.168.10.1', 'PC-IT-001', 1, 'PC');
 INSERT INTO host (mac_id, ip, name, network_id, system) VALUES ('00:10:4a:10:53:bd', '192.168.10.2', 'PC-IT-002', 1, 'PC');
 INSERT INTO host (mac_id, ip, name, network_id, system) VALUES ('00:12:2f:f2:20:ab', '192.168.10.3', 'Laptop-IT-001', 1, 'Laptop');
 INSERT INTO host (mac_id, ip, name, network_id, system) VALUES ('00:02:16:g6:j5:k9', '192.168.20.1', 'Laptop-MA-001', 2, 'Laptop');
-
+INSERT INTO port (switch_id, name, port_mode, host_mac_id) VALUES (1, 'FastEthernet0/1', 'Access', '00:00:5e:00:53:af');
+INSERT INTO port (switch_id, name, port_mode, host_mac_id) VALUES (1, 'FastEthernet0/2', 'Access', '00:10:4a:10:53:bd');
+INSERT INTO port (switch_id, name, port_mode, host_mac_id) VALUES (1, 'FastEthernet0/3', 'Access', null);
 
 
 /*
