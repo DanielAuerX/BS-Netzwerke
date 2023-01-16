@@ -11,23 +11,14 @@ import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
-@Data       // creates getters and setters etc
-@Builder    // builds objects
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@IdClass(PortId.class)
 public class Port {
 
-//    @Id
-//    //@GeneratedValue//(generator = "uuid2") //todo the generator doesnt work
-//    //@GenericGenerator(name = "uuid2", strategy = "uuid2")
-//    //@UuidGenerator
-//    @GeneratedValue(generator = "UUID")
-//    @GenericGenerator(
-//            name = "UUID",
-//            strategy = "org.hibernate.id.UUIDGenerator"
-//    )
-//    private UUID id;
     @Id
     @JoinColumn(name = "switch_id")
     @ManyToOne(optional = false)
