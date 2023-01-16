@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/calculator")
 @CrossOrigin
 public class CalculatorController {
 
     record NewCalculateRequest(String ip, String mask, int amount) {
     }
 
-    @PostMapping("/calculator")
+    @PostMapping()
     public ResponseEntity<List<String>> doSomething(@RequestBody NewCalculateRequest request){
         String ipAddress = request.ip();
         String subnetMask = request.mask();
