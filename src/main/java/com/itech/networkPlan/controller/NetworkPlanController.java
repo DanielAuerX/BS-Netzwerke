@@ -72,8 +72,8 @@ public class NetworkPlanController {
         return ResponseEntity.ok(allHosts);
     }
 
-    @GetMapping("hosts/{networkId}")
-    public ResponseEntity getHostsByNetwork(@PathVariable("networkId") Integer networkId){
+    @GetMapping("hosts-by-network")
+    public ResponseEntity getHostsByNetwork(@RequestParam("networkId") Integer networkId){
         List<Host> hostsByNetwork;
         try {
             hostsByNetwork = networkPlanService.getHostsByNetwork(networkId);
