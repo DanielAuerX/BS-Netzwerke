@@ -69,10 +69,21 @@ public class NetworkPlanController {
     public ResponseEntity getHostsByNetwork(@RequestParam("networkId") Integer networkId){
         List<Host> hostsByNetwork;
         try {
-            hostsByNetwork = networkPlanService.getHostsByNetwork(networkId);
+            hostsByNetwork = networkPlanService.getHostsByNetworkId(networkId);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok(hostsByNetwork);
+    }
+
+    @GetMapping("hosts-by-switch")
+    public ResponseEntity getHostsBySwitch(@RequestParam("switchId") Integer switchId){
+        List<Host> hostsBySwitch;
+        try {
+            hostsBySwitch = networkPlanService.getHostsBySwitchId(switchId);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok(hostsBySwitch);
     }
 }

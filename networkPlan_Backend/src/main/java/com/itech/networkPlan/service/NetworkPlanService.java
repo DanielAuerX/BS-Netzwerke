@@ -8,11 +8,12 @@ import com.itech.networkPlan.repository.HostRepository;
 import com.itech.networkPlan.repository.NetworkRepository;
 import com.itech.networkPlan.repository.PortRepository;
 import com.itech.networkPlan.repository.SwitchRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class NetworkPlanService {
@@ -64,12 +65,40 @@ public class NetworkPlanService {
         }
     }
 
-    public List<Host> getHostsByNetwork(Integer networkId) {
+    public List<Host> getHostsByNetworkId(Integer networkId) {
         Optional<Network> networkById = networkRepository.findById(networkId);
         if (networkById.isPresent()) {
             return hostRepository.findAllByNetwork(networkById.get());
         } else {
             throw new RuntimeException("No hosts have been found by this id! :(");
+        }
+    }
+
+    public List<Host> getHostsByNetworkName(String networkName) {
+        Optional<Network> networkByName = networkRepository.findByName(networkName);
+        if (networkByName.isPresent()) {
+            return hostRepository.findAllByNetwork(networkByName.get());
+        } else {
+            throw new RuntimeException("No hosts have been found by this name! :(");
+        }
+    }
+
+    public List<Host> getHostsBySwitchId(Integer switchId) {
+        Optional<Switch> switchById = switchRepository.findById(switchId);
+        if (switchById.isPresent()) {
+            List<Port> portsBySwitchId = portRepository.findAllBySwitchId(switchById.get());
+            List<Host> hostsBySwitch = portsBySwitchId.stream()
+                    .map(Port::getHost)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            if (!hostsBySwitch.isEmpty()){
+                return hostsBySwitch;
+            }
+            else {
+                throw new RuntimeException("No host has been found by this switch id! :(");
+            }
+        } else {
+            throw new RuntimeException("No switch has been found by this id! :(");
         }
     }
 }

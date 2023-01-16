@@ -1,34 +1,4 @@
-\c postgres
-DROP DATABASE network;
-CREATE DATABASE network;
-\c network
 
-CREATE TABLE switch(
-                       id UUID NOT NULL PRIMARY KEY,
-                       name VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE port(
-                       switch UUID NOT NULL PRIMARY KEY, /* foreign key*/
-                       name VARCHAR(100) NOT NULL PRIMARY KEY,
-                       portMode VARCHAR(100) NOT NULL
-
-);
-
-CREATE TABLE host(
-                       macId VARCHAR(20) NOT NULL PRIMARY KEY,
-                       name VARCHAR(100) NOT NULL,
-                       port UUID NOT NULL, /* foreign key*/
-                       ip VARCHAR(100),
-                       defaultGateway uuid
-);
-
-CREATE TABLE network(
-                       id UUID NOT NULL PRIMARY KEY,
-                       name VARCHAR(100) NOT NULL,
-                       location VARCHAR(100) NOT NULL
-
-);
 
 INSERT INTO network (name, location) VALUES ('IT','Steindamm 80');
 INSERT INTO network (name, location) VALUES ('Marketing','Steindamm 71');

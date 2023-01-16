@@ -1,15 +1,25 @@
 package com.itech.networkPlan.model;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@Embeddable
 public class PortId implements Serializable {
-    private Integer switchId;  //Integer or Switch ??
+    @ManyToOne
+    @JoinColumn(name = "switch_id")
+    private Switch switchId;  //Integer or Switch ??
     private String name;
 
-    public PortId(Integer switchId, String name) {
-        this.switchId = switchId;
-        this.name = name;
+//    public PortId(Switch switchId, String name) {
+//        this.switchId = switchId;
+//        this.name = name;
+//    }
+
+    public PortId() {
     }
 
     @Override
