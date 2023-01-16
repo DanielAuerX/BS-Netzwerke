@@ -28,6 +28,22 @@
   color: #61dafb;
 }
 
+.list-of-stored-ips{
+  height: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 85%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+}
+
+.list-of-stored-ips.has-content {
+  height: 200px;
+  overflow: scroll;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
