@@ -28,7 +28,7 @@ public class NetworkPlanController {
         this.networkPlanService = networkPlanService;
     }
 
-    @GetMapping("networks")
+    @GetMapping()
     public ResponseEntity getNetworks() {
         List<Network> allNetworks;
         try {
