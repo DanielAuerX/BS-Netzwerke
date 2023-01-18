@@ -11,13 +11,8 @@ import java.util.Objects;
 public class PortId implements Serializable {
     @ManyToOne
     @JoinColumn(name = "switch_id")
-    private Switch switchId;  //Integer or Switch ??
+    private Switch switchId;
     private String name;
-
-//    public PortId(Switch switchId, String name) {
-//        this.switchId = switchId;
-//        this.name = name;
-//    }
 
     public PortId() {
     }
