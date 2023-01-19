@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 interface DeviceListState {
     devices: any[];
     ports: any[];
+    switches: any[];
+    hosts: any[],
     searchQuery: string;
 }
 
@@ -10,6 +12,8 @@ class DeviceList extends Component {
     state: DeviceListState = {
         devices: [],
         ports: [],
+        switches: [],
+        hosts: [],
         searchQuery: ""
     };
 
@@ -29,6 +33,22 @@ class DeviceList extends Component {
         } catch (error) {
             console.log(error);
         }
+        try{
+            const response = await fetch('http://localhost:8080/api/network/switches')
+            const data = await response.json();
+            console.log(data)
+            this.setState({switches: data});
+        }catch(error){
+            console.log(error)
+        }
+        try{
+            const response = await fetch('http://localhost:8080/api/network/hosts')
+            const data = await response.json();
+            console.log(data)
+            this.setState({hosts: data})
+        }catch(error){
+            console.log(error)
+        }
     }
 
 
@@ -42,6 +62,9 @@ class DeviceList extends Component {
         );
         const filteredPorts = this.state.ports.filter(port =>
             port.name.includes(this.state.searchQuery)
+        );
+        const filteredSwitches = this.state.switches.filter(zwitch =>
+            zwitch.name.includes(this.state.searchQuery)
         );
         return (
             <div>
@@ -72,7 +95,15 @@ class DeviceList extends Component {
                             <p>Host System: {port.host.system}</p>
                             <p> Network: {port.host.network.name} ({port.host.network.location}) </p> </>)} </div>
                 ))}
+                {filteredSwitches.map(zwitch => (
+                    <div>
+                        <br></br>
+                        <p>Switch: {zwitch.id}</p>
+                        <p>Name: {zwitch.name}</p>
+                    </div>
+                ))}
             </div>
+
         );
     }
 }
