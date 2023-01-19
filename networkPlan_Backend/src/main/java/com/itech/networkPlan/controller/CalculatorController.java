@@ -17,7 +17,7 @@ public class CalculatorController {
     }
 
     @PostMapping()
-    public ResponseEntity<List<String>> doSomething(@RequestBody NewCalculateRequest request){
+    public ResponseEntity<List<String>> calculate(@RequestBody NewCalculateRequest request){
         String ipAddress = request.ip();
         String subnetMask = request.mask();
         int numSubnets = request.amount();
