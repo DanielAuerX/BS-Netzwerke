@@ -65,8 +65,8 @@ public class NetworkPlanController {
         return ResponseEntity.ok(allHosts);
     }
 
-    @GetMapping("hosts-by-network")
-    public ResponseEntity getHostsByNetwork(@RequestParam("networkId") Integer networkId){
+    @GetMapping("hosts-by-department")
+    public ResponseEntity getHostsByNetwork(@RequestParam("departmentId") Integer networkId){
         List<Host> hostsByNetwork;
         try {
             hostsByNetwork = networkPlanService.getHostsByNetworkId(networkId);
@@ -86,4 +86,15 @@ public class NetworkPlanController {
         }
         return ResponseEntity.ok(hostsBySwitch);
     }
-}
+
+    @GetMapping("hosts-by-vlan")
+    public ResponseEntity getHostsBySwitch(@RequestParam("vlan") String  vlan){
+        List<Host> hostsByVlan;
+        try {
+            hostsByVlan = networkPlanService.getHostsByVlan(vlan);
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok(hostsByVlan);
+        }
+    }

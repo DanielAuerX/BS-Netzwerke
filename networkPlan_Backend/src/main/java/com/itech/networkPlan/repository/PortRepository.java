@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface PortRepository extends JpaRepository<Port, PortId> {
 
     List<Port> findAllBySwitchId (Switch switchId);
+    List<Port> findAllByVlan (String vlan);
 }

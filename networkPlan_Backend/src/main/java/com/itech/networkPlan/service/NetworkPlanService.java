@@ -101,4 +101,17 @@ public class NetworkPlanService {
             throw new RuntimeException("No switch has been found by this id! :(");
         }
     }
+
+    public List<Host> getHostsByVlan(String vlan) {
+        List<Port> portsByVlan = portRepository.findAllByVlan(vlan);
+        if (portsByVlan.isEmpty()){
+            throw new RuntimeException("No host has been found by this vlan! :(");
+        }
+        else {
+            return portsByVlan.stream()
+                    .map(Port::getHost)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+        }
+    }
 }
