@@ -42,19 +42,23 @@ class DeviceList extends Component {
             console.log(error)
         }
         try{
-            const response = await fetch('http://localhost:8080/api/network/hosts')
+            const response = await fetch("http://localhost:8080/api/network/hosts-by-vlan?vlan=" + this.state.searchQuery)
             const data = await response.json();
             console.log(data)
-            this.setState({hosts: data})
+            this.setState({ports: data})
         }catch(error){
             console.log(error)
         }
     }
 
 
+
     handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({searchQuery: event.target.value});
+        this.componentDidMount();
     }
+
+
 
     render() {
         const filteredDevices = this.state.devices.filter(device =>
@@ -66,13 +70,14 @@ class DeviceList extends Component {
         const filteredSwitches = this.state.switches.filter(zwitch =>
             zwitch.name.includes(this.state.searchQuery)
         );
+        const filteredHosts = this.state.hosts.filter(host =>
+            host.vlan.includes(this.state.searchQuery)
+        );
         return (
             <div>
                 <input
                     type="text"
-                    placeholder="Search by name"
-                    onChange={this.handleSearch}
-                />
+                    placeholder="Search by VLAN"/>
                 {filteredDevices.map(device => (
                     <div key={device.id}>
                         <p>Department: {device.id}</p>
@@ -87,13 +92,14 @@ class DeviceList extends Component {
                         <p>Port: {port.id}</p>
                         <p>Switch ID: {port.switchId.name}</p>
                         <p>Port Name: {port.name}</p>
+                        <p>Port VLAN: {port.vlan}</p>
                         <p>Port Mode: {port.portMode}</p>
                         {port.host && (<>
                             <p>Host MAC ID: {port.host.macId}</p>
                             <p>Host Name: {port.host.name}</p>
                             <p>Host IP: {port.host.ip}</p>
                             <p>Host System: {port.host.system}</p>
-                            <p> Network: {port.host.network.name} ({port.host.network.location}) </p> </>)} </div>
+                            <p> Department: {port.host.department.name} ({port.host.department.location}) </p> </>)} </div>
                 ))}
                 {filteredSwitches.map(zwitch => (
                     <div>
@@ -102,8 +108,25 @@ class DeviceList extends Component {
                         <p>Name: {zwitch.name}</p>
                     </div>
                 ))}
+                <table>
+                    <thead>
+                    <tr>
+                        <th>VLAN</th>
+                        <th>IP</th>
+                        <th>MAC</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {filteredHosts.length > 0 && filteredHosts.map(host => (
+                        <tr key={host.id}>
+                            <td>{host.vlan}</td>
+                            <td>{host.ip}</td>
+                            <td>{host.mac}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
             </div>
-
         );
     }
 }
