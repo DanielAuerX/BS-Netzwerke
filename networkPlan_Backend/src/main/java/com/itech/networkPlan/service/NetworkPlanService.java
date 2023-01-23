@@ -65,7 +65,7 @@ public class NetworkPlanService {
         }
     }
 
-    public List<Host> getHostsByNetworkId(Integer networkId) {
+    public List<Host> getHostsByDepartmentId(Integer networkId) {
         Optional<Department> departmentById = departmentRepository.findById(networkId);
         if (departmentById.isPresent()) {
             return hostRepository.findAllByDepartment(departmentById.get());
@@ -74,8 +74,8 @@ public class NetworkPlanService {
         }
     }
 
-    public List<Host> getHostsByNetworkName(String networkName) {
-        Optional<Department> departmentByName = departmentRepository.findByName(networkName);
+    public List<Host> getHostsByDepartmentName(String departmentName) {
+        Optional<Department> departmentByName = departmentRepository.findByName(departmentName);
         if (departmentByName.isPresent()) {
             return hostRepository.findAllByDepartment(departmentByName.get());
         } else {
@@ -112,6 +112,16 @@ public class NetworkPlanService {
                     .map(Port::getHost)
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
+        }
+    }
+
+    public Host getHostByIp(String ip){
+        Optional<Host> hostByIp = hostRepository.findHostByIp(ip);
+        if (hostByIp.isPresent()){
+            return hostByIp.get();
+        }
+        else {
+            throw new RuntimeException("No host has been found by this ip! :(");
         }
     }
 }

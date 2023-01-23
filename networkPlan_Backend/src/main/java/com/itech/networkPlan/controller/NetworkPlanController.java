@@ -33,7 +33,7 @@ public class NetworkPlanController {
     }
 
     @GetMapping("ports")
-    public ResponseEntity getPorts(){
+    public ResponseEntity getPorts() {
         List<Port> allPorts;
         try {
             allPorts = networkPlanService.getAllPorts();
@@ -44,7 +44,7 @@ public class NetworkPlanController {
     }
 
     @GetMapping("switches")
-    public ResponseEntity getSwitches(){
+    public ResponseEntity getSwitches() {
         List<Switch> allSwitches;
         try {
             allSwitches = networkPlanService.getAllSwitches();
@@ -55,7 +55,7 @@ public class NetworkPlanController {
     }
 
     @GetMapping("hosts")
-    public ResponseEntity getHosts(){
+    public ResponseEntity getHosts() {
         List<Host> allHosts;
         try {
             allHosts = networkPlanService.getAllHosts();
@@ -66,18 +66,29 @@ public class NetworkPlanController {
     }
 
     @GetMapping("hosts-by-department")
-    public ResponseEntity getHostsByNetwork(@RequestParam("departmentId") Integer networkId){
+    public ResponseEntity getHostsByDepartment(@RequestParam("departmentId") Integer departmentId) {
         List<Host> hostsByNetwork;
         try {
-            hostsByNetwork = networkPlanService.getHostsByNetworkId(networkId);
+            hostsByNetwork = networkPlanService.getHostsByDepartmentId(departmentId);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok(hostsByNetwork);
     }
 
+    @GetMapping("hosts-by-department-name")
+    public ResponseEntity getHostsByNetwork(@RequestParam("departmentName") String departmentName) {
+        List<Host> hostsByDepartmentName;
+        try {
+            hostsByDepartmentName = networkPlanService.getHostsByDepartmentName(departmentName);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok(hostsByDepartmentName);
+    }
+
     @GetMapping("hosts-by-switch")
-    public ResponseEntity getHostsBySwitch(@RequestParam("switchId") Integer switchId){
+    public ResponseEntity getHostsBySwitch(@RequestParam("switchId") Integer switchId) {
         List<Host> hostsBySwitch;
         try {
             hostsBySwitch = networkPlanService.getHostsBySwitchId(switchId);
@@ -88,13 +99,27 @@ public class NetworkPlanController {
     }
 
     @GetMapping("hosts-by-vlan")
-    public ResponseEntity getHostsBySwitch(@RequestParam("vlan") String  vlan){
+    public ResponseEntity getHostsBySwitch(@RequestParam("vlan") String vlan) {
         List<Host> hostsByVlan;
         try {
             hostsByVlan = networkPlanService.getHostsByVlan(vlan);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok(hostsByVlan);
-        }
     }
+
+    @GetMapping("hosts-by-ip")
+    public ResponseEntity getHostByIp(@RequestParam("ip") String ip) {
+        Host hostByIp;
+        try {
+            hostByIp = networkPlanService.getHostByIp(ip);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok(hostByIp);
+    }
+
+}
+
+
