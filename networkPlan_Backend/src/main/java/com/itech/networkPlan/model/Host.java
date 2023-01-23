@@ -17,7 +17,7 @@ public class Host {
     private String macId;
     private String name;
     @ManyToOne //optional: host might not be assigned to a network yet
-    private Network network;
+    private Department department;
     private String ip;
     private String system;
    // private String defaultGateway; //foreign of router?

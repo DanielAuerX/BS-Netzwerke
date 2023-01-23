@@ -1,11 +1,11 @@
 package com.itech.networkPlan.service;
 
 import com.itech.networkPlan.model.Host;
-import com.itech.networkPlan.model.Network;
+import com.itech.networkPlan.model.Department;
 import com.itech.networkPlan.model.Port;
 import com.itech.networkPlan.model.Switch;
 import com.itech.networkPlan.repository.HostRepository;
-import com.itech.networkPlan.repository.NetworkRepository;
+import com.itech.networkPlan.repository.DepartmentRepository;
 import com.itech.networkPlan.repository.PortRepository;
 import com.itech.networkPlan.repository.SwitchRepository;
 import org.springframework.stereotype.Service;
@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class NetworkPlanService {
-    private final NetworkRepository networkRepository;
+    private final DepartmentRepository departmentRepository;
     private final HostRepository hostRepository;
     private final PortRepository portRepository;
     private final SwitchRepository switchRepository;
 
-    public NetworkPlanService(NetworkRepository networkRepository, HostRepository hostRepository, PortRepository portRepository, SwitchRepository switchRepository) {
-        this.networkRepository = networkRepository;
+    public NetworkPlanService(DepartmentRepository departmentRepository, HostRepository hostRepository, PortRepository portRepository, SwitchRepository switchRepository) {
+        this.departmentRepository = departmentRepository;
         this.hostRepository = hostRepository;
         this.portRepository = portRepository;
         this.switchRepository = switchRepository;
@@ -38,12 +38,12 @@ public class NetworkPlanService {
         }
     }
 
-    public List<Network> getAllNetworks() {
-        List<Network> networkList = networkRepository.findAll();
-        if (!networkList.isEmpty()) {
-            return networkList;
+    public List<Department> getAllDepartments() {
+        List<Department> departmentList = departmentRepository.findAll();
+        if (!departmentList.isEmpty()) {
+            return departmentList;
         } else {
-            throw new RuntimeException("No networks have been found! :(");
+            throw new RuntimeException("No departments have been found! :(");
         }
     }
 
@@ -66,18 +66,18 @@ public class NetworkPlanService {
     }
 
     public List<Host> getHostsByNetworkId(Integer networkId) {
-        Optional<Network> networkById = networkRepository.findById(networkId);
-        if (networkById.isPresent()) {
-            return hostRepository.findAllByNetwork(networkById.get());
+        Optional<Department> departmentById = departmentRepository.findById(networkId);
+        if (departmentById.isPresent()) {
+            return hostRepository.findAllByDepartment(departmentById.get());
         } else {
             throw new RuntimeException("No hosts have been found by this id! :(");
         }
     }
 
     public List<Host> getHostsByNetworkName(String networkName) {
-        Optional<Network> networkByName = networkRepository.findByName(networkName);
-        if (networkByName.isPresent()) {
-            return hostRepository.findAllByNetwork(networkByName.get());
+        Optional<Department> departmentByName = departmentRepository.findByName(networkName);
+        if (departmentByName.isPresent()) {
+            return hostRepository.findAllByDepartment(departmentByName.get());
         } else {
             throw new RuntimeException("No hosts have been found by this name! :(");
         }

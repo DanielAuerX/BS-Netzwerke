@@ -28,6 +28,7 @@ public class Port {
     private String portMode;
     @OneToOne
     private Host host;
+    private String vlan;
 
 
 }

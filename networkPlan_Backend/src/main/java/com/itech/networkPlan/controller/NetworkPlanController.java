@@ -1,7 +1,7 @@
 package com.itech.networkPlan.controller;
 
 import com.itech.networkPlan.model.Host;
-import com.itech.networkPlan.model.Network;
+import com.itech.networkPlan.model.Department;
 import com.itech.networkPlan.model.Port;
 import com.itech.networkPlan.model.Switch;
 import com.itech.networkPlan.service.NetworkPlanService;
@@ -23,13 +23,13 @@ public class NetworkPlanController {
 
     @GetMapping("networks")
     public ResponseEntity getNetworks() {
-        List<Network> allNetworks;
+        List<Department> allDepartments;
         try {
-            allNetworks = networkPlanService.getAllNetworks();
+            allDepartments = networkPlanService.getAllDepartments();
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok(allNetworks);
+        return ResponseEntity.ok(allDepartments);
     }
 
     @GetMapping("ports")
