@@ -1,32 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, SyntheticEvent } from 'react';
 
 function App() {
     const [ip, setIp] = useState('');
     const [mask, setMask] = useState('');
     const [amount, setAmount] = useState('');
-    const [ips, setIps] = useState([]);
+    const [subnets, setSubnets] = useState<[string, string][]>([]);
     const [error, setError] = useState('');
-    const resetIps = () => {
-        setIps([]);
-    }
 
-    async function handleSubmit(){
-        // @ts-ignore
-        // eslint-disable-next-line no-restricted-globals
+    async function handleSubmit(event: SyntheticEvent){
         event.preventDefault();
-        // @ts-ignore
-        if (amount < 3) {
-            setError('Please enter at least three');
-            return;
-        }
         setError('');
-        const response = await fetch('http://localhost:8080/api/calculator', {
+        await fetch('http://localhost:8080/api/calculator', {
             method: 'POST',
             body: JSON.stringify({ ip, mask, amount }),
             headers: { 'Content-Type': 'application/json' },
         })
             .then((res) => res.json())
-            .then((data) => setIps(data));
+            .then((data) => {
+                const subnetsArray = Object.entries(data) as unknown as [string, unknown][];
+                subnetsArray.sort((a, b) => {
+                    const ipA = a[0].split(".").map(Number);
+                    const ipB = b[0].split(".").map(Number);
+                    for (let i = 0; i < 4; i++) {
+                        if (ipA[i] !== ipB[i]) {
+                            return ipA[i] - ipB[i];
+                        }
+                    }
+                    return 0;
+                });
+                setSubnets(subnetsArray as [string, string][]);
+            });
+
     };
 
     return (
@@ -35,8 +39,7 @@ function App() {
                 <label>
                     IP:
                     <input
-                        type="text"
-                        value={ip}
+                        type="text"value={ip}
                         onChange={(e) => setIp(e.target.value)}
                     />
                 </label>
@@ -62,20 +65,24 @@ function App() {
                 <button type="submit">Submit</button>
             </form>
             {error && <div style={{color: "red"}}>{error}</div>}
-
-            <div>
-                <button onClick={resetIps}>Reset</button>
-            </div>
-
-            <h1>IP Addresses</h1>
-            {ips.map((ip, index) => (
-                <li key={ip}>
-                    {index === 0 ? "Network IP: " : index === ips.length - 1 ? "Broadcast IP: " : "Possible IP: "}
-                    {ip}
-                </li>
-            ))}
+            <h1>Subnets</h1>
+            <table>
+                <thead>
+                <tr>
+                    <th>IP</th>
+                    <th>Broadcast</th>
+                </tr>
+                </thead>
+                <tbody>
+                {subnets.map((subnet, index) => (
+                    <tr key={index}>
+                        <td>{subnet[0]}</td>
+                        <td>{subnet[1]}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
         </div>
-
     );
 }
 
