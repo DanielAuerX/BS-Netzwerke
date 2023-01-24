@@ -75,6 +75,31 @@
   transform: scale(1.1); /* Scale up the button on hover */
 }
 
+.input-text {
+  padding: 0.5rem;
+  font-size: 1rem;
+  margin: 0.3rem 0rem
+}
+
+.calculator-table {
+  text-align: center;
+  margin: 50px auto 0;
+  background-color: #f2f2f2; /* Light gray background */
+  border: 1px solid #ccc; /* Gray border */
+  border-collapse: collapse; /* Remove cell spacing */
+  width: 40%; /* Set table width */
+}
+th, td {
+  border: 1px solid #ddd; /* Light gray cell borders */
+  padding: 8px; /* Add some padding to cells */
+  text-align: center; /* Center the text in cells */
+}
+
+th {
+  background-color: #4CAF50; /* Green background for header cells */
+  color: white; /* White text for header cells */
+}
+
 
 @keyframes App-logo-spin {
   from {

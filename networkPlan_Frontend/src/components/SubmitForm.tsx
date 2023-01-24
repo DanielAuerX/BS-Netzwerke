@@ -34,39 +34,48 @@ function App() {
     };
 
     return (
-        <div>
+        <div className="App">
+            <h1>Subnet Calculator</h1>
+            <h2>Enter the values</h2>
             <form onSubmit={handleSubmit}>
                 <label>
-                    IP:
                     <input
                         type="text"value={ip}
                         onChange={(e) => setIp(e.target.value)}
+                        className="input-text"
+                        placeholder="IP"
                     />
                 </label>
                 <br />
                 <label>
-                    Mask:
                     <input
                         type="text"
                         value={mask}
                         onChange={(e) => setMask(e.target.value)}
+                        className="input-text"
+                        placeholder="Mask"
                     />
                 </label>
                 <br />
                 <label>
-                    Amount:
                     <input
                         type="text"
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
+                        className="input-text"
+                        placeholder="Amount"
                     />
                 </label>
                 <br />
-                <button type="submit">Submit</button>
+                <button
+                    type="submit"
+                    className="fancy-button"
+                >Submit</button>
             </form>
             {error && <div style={{color: "red"}}>{error}</div>}
-            <h1>Subnets</h1>
-            <table>
+
+
+            <table className="calculator-table">
                 <thead>
                 <tr>
                     <th>IP</th>
