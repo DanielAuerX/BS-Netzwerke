@@ -59,14 +59,27 @@ class DeviceList extends Component {
         this.setState({searchQuery: event.target.value});
     }
 
-    async filterData() {
+    async filterDataByVlan() {
         try {
             const response = await fetch(
                 "http://localhost:8080/api/network/hosts-by-vlan?vlan=" + this.state.searchQuery
             );
             console.log(this.state.searchQuery)
             const data = await response.json();
-            this.setState({ filteredData: data });
+            this.setState({ filteredData: data, isVlan: true });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async filterDataBySwitchId() {
+        try {
+            const response = await fetch(
+                "http://localhost:8080/api/network/hosts-by-switch?switchId=" + this.state.searchQuery
+            );
+            console.log(this.state.searchQuery)
+            const data = await response.json();
+            this.setState({ filteredData: data, isVlan: false });
         } catch (error) {
             console.log(error);
         }
@@ -92,11 +105,24 @@ class DeviceList extends Component {
                     placeholder="Enter VLAN"
                     onChange={this.handleChange}
                 />
-                <button onClick={() => this.filterData()}>Filter</button>
+                <button onClick={() => this.filterDataByVlan()}>Filter</button>
                 {this.state.filteredData.map((data) => (
                     <div key={data.id}>
                         <p>Name: {data.name}</p>
                         <p>VLAN: {this.state.searchQuery}</p>
+                        <br />
+                    </div>
+                ))}
+                <input
+                    type="text"
+                    placeholder="Enter SwitchID"
+                    onChange={this.handleChange}
+                />
+                <button onClick={() => this.filterDataBySwitchId()}>Filter</button>
+                {this.state.filteredData.map((data) => (
+                    <div key={data.id}>
+                        <p>Name: {data.name}</p>
+                        <p>VLAN: {data.vlan}</p>
                         <p>Location: {data.location}</p>
                         <br />
                     </div>

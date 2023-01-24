@@ -1,5 +1,3 @@
-
-
 INSERT INTO department (name, location) VALUES ('IT','Steindamm 80');
 INSERT INTO department (name, location) VALUES ('Marketing','Steindamm 71');
 INSERT INTO switch (name) VALUES ('IT-001');
