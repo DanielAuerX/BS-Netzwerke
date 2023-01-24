@@ -9,6 +9,7 @@ interface DeviceListState {
     filteredData: any[];
     filterBy: string;
     selectedEndpoint: string;
+    showVlanMenu: boolean;
 }
 
 class DeviceList extends Component {
@@ -21,6 +22,7 @@ class DeviceList extends Component {
         filteredData: [],
         filterBy: "vlan",
         selectedEndpoint: "",
+        showVlanMenu: false,
     };
 
     async componentDidMount() {
@@ -28,7 +30,8 @@ class DeviceList extends Component {
             try {
                 const response = await fetch("http://localhost:8080/api/network/networks");
                 const data = await response.json();
-                this.setState({devices: data});
+                this.setState({devices: [], ports: [], switches: [], hosts: [], filteredData: []})
+                this.setState({devices: data})
             } catch (error) {
                 console.log(error);
             }
@@ -38,7 +41,8 @@ class DeviceList extends Component {
                 const response = await fetch("http://localhost:8080/api/network/ports");
                 const data = await response.json();
                 console.log(data);
-                this.setState({ports: data});
+                this.setState({devices: [], ports: [], switches: [], hosts: [], filteredData: []})
+                this.setState({ports: data})
             } catch (error) {
                 console.log(error);
             }
@@ -48,7 +52,8 @@ class DeviceList extends Component {
                 const response = await fetch("http://localhost:8080/api/network/switches");
                 const data = await response.json();
                 console.log(data);
-                this.setState({switches: data});
+                this.setState({devices: [], ports: [], switches: [], hosts: [], filteredData: []}) //y data still there??
+                this.setState({switches: data})
             } catch (error) {
                 console.log(error);
             }
@@ -62,7 +67,9 @@ class DeviceList extends Component {
             );
             console.log(this.state.searchQuery)
             const data = await response.json();
+            this.setState({devices: [], ports: [], switches: [], hosts: [], filteredData: []});
             this.setState({filteredData: data});
+            console.log(data)
         } catch (error) {
             console.log(error);
         }
@@ -75,10 +82,15 @@ class DeviceList extends Component {
             );
             console.log(this.state.searchQuery)
             const data = await response.json();
+            this.setState({devices: [], ports: [], switches: [], hosts: [], filteredData: []});
             this.setState({filteredData: data});
         } catch (error) {
             console.log(error);
         }
+    }
+
+    handleVlanMenuButtonClick = () => {
+        this.setState({ showVlanMenu: !this.state.showVlanMenu });
     }
 
     handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -112,6 +124,7 @@ class DeviceList extends Component {
         try {
             const response = await fetch("http://localhost:8080/api/network/networks");
             const data = await response.json();
+
             this.setState({devices: data});
         } catch (error) {
             console.log(error);
@@ -139,6 +152,17 @@ class DeviceList extends Component {
         }
     }
 
+    async updateHostData() {
+        try {
+            const response = await fetch("http://localhost:8080/api/network/hosts");
+            const data = await response.json();
+            console.log(data);
+            this.setState({hosts: data});
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     render() {
         const filteredDevices = this.state.devices.filter((device) =>
             device.name.includes(this.state.searchQuery)
@@ -150,7 +174,7 @@ class DeviceList extends Component {
             zwitch.name.includes(this.state.searchQuery)
         );
         const filteredHosts = this.state.hosts.filter((host) =>
-            host.vlan.includes(this.state.searchQuery)
+            host.name.includes(this.state.searchQuery)
         );
         return (
             <div className="App">
@@ -160,78 +184,69 @@ class DeviceList extends Component {
                     <option value="VLAN30">VLAN 30</option>
                     <option value="VLAN20">VLAN 20</option>
                     <option value="1">Switch 1</option>
-                    <option value="switch2">Switch 2</option>
+                    <option value="2">Switch 2</option>
+                    <option value="3">Switch 3</option>
                 </select>
                 <button onClick={() => this.filterDataByVlan()} className="fancy-button">Filter by VLAN</button>
                 <button onClick={() => this.filterDataBySwitchId()} className="fancy-button">Filter by Switch ID
                 </button>
-                {this.state.filteredData.map((data) => (
-                    <div key={data.id}>
-                        <p>Name: {data.name}</p>
-                        <p>VLAN: {this.state.searchQuery}</p>
-                        <br/>
-                    </div>
-                ))}
+
                 <button
                     onClick={() => this.updateNetworkData()}
                     className="fancy-button"
-                >Update Network Data
+                >Update Department Data
                 </button>
-                {this.state.devices.map((devices) => {
-                    return <div>{devices.name}</div>;
-                })}
+
                 <button onClick={() => this.updatePortData()} className="fancy-button">Update Port Data</button>
-                {this.state.ports.map((port) => {
-                    return <div>{port.name}</div>;
-                })}
+
                 <button onClick={() => this.updateSwitchData()} className="fancy-button">Update Switch Data</button>
-                {this.state.switches.map((switches) => {
-                    return <div>{switches.name}</div>;
-                })}
+
+                <button onClick={() => this.updateHostData()} className="fancy-button">Update Host Data</button>
+
+                {this.state.filteredData.map((data) => (
+                    <div key={data.id} className="search-table">
+                        <p><strong>Host: {data.macId}</strong></p>
+                        <p>{data.name}</p>
+                        <p>{data.ip}</p>
+                        <p>{this.state.searchQuery}</p>
+                        <br/>
+                    </div>
+                ))}
+
                 {filteredDevices.map((device) => (
-                    <div key={device.id}>
-                        <p>Department: {device.id}</p>
+                    <div key={device.id} className="search-table">
+                        <p><strong>Department: {device.id}</strong></p>
                         <p>Name: {device.name}</p>
                         <p>Location: {device.location}</p>
                         <br/>
                     </div>
                 ))}
                 {filteredPorts.map((port) => (
-                    <div>
+                    <div className="search-table">
                         <br/>
-                        <p>Port: {port.id}</p>
+                        <p><strong>Port: {port.name}</strong></p>
                         <p>Switch ID: {port.switchId.name}</p>
-                        <p>Port Name: {port.name}</p>
                         <p>Port VLAN: {port.vlan}</p>
                         <p>Port Mode: {port.portMode}</p>
                         {port.host && (
                             <>
-                                <p>Host MAC ID: {port.host.macId}</p>
-                                <p>Host Name: {port.host.name}</p>
-                                <p>Host IP: {port.host.ip}</p>
-                                <p>Host System: {port.host.system}</p>
-                                <p>
-                                    Department:{" "}
-                                    {port.host.department.name} (
-                                    {port.host.department.location})
-                                </p>
+                                <p>Host: {port.host.name}</p>
                             </>
                         )}
                         <br/>
                     </div>
                 ))}
                 {filteredSwitches.map((zwitch) => (
-                    <div key={zwitch.id}>
-                        <p>Switch: {zwitch.name}</p>
-                        <p>Switch ID: {zwitch.id}</p>
-                        <p>Location: {zwitch.location}</p>
+                    <div key={zwitch.id} className="search-table">
+                        <p><strong>Switch: {zwitch.id}</strong></p>
+                        <p>{zwitch.name}</p>
                         <br/>
                     </div>
                 ))}
                 {filteredHosts.map((host) => (
-                    <div key={host.id}>
-                        <p>Host: {host.name}</p>
-                        <p>MAC ID: {host.macId}</p>
+                    <div key={host.id} className="search-table">
+                        <p><strong>Host: {host.macId}</strong></p>
+                        <p>Name: {host.name}</p>
                         <p>IP: {host.ip}</p>
                         <p>System: {host.system}</p>
                         <p>Department: {host.department.name}</p>
@@ -239,7 +254,7 @@ class DeviceList extends Component {
                     </div>
                 ))}
             </div>
-        );
+                )
     }
 }
 

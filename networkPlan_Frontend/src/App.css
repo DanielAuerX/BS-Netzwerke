@@ -100,6 +100,15 @@ th {
   color: white; /* White text for header cells */
 }
 
+.search-table {
+  text-align: center;
+  margin: 50px auto 0;
+  background-color: #f2f2f2; /* Light gray background */
+  border: 1px solid #ccc; /* Gray border */
+  border-collapse: collapse; /* Remove cell spacing */
+  width: 40%; /* Set table width */
+}
+
 .fancy-h1{
   font-size: 2em;
   text-align: center;
