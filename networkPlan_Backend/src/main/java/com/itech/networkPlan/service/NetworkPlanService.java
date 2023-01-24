@@ -82,9 +82,14 @@ public class NetworkPlanService {
     public List<Host> getHostsByDepartmentName(String departmentName) {
         Optional<Department> departmentByName = departmentRepository.findByName(departmentName);
         if (departmentByName.isPresent()) {
-            return hostRepository.findAllByDepartment(departmentByName.get());
+            List<Host> allHostsByDepartment = hostRepository.findAllByDepartment(departmentByName.get());
+            if (!allHostsByDepartment.isEmpty()){
+                return allHostsByDepartment;
+            }else {
+                throw new RuntimeException("No hosts have been found by this name! :(");
+            }
         } else {
-            throw new RuntimeException("No hosts have been found by this name! :(");
+            throw new RuntimeException("No department has been found by this name! :(");
         }
     }
 
@@ -109,15 +114,16 @@ public class NetworkPlanService {
 
     public List<Host> getHostsByVlan(String vlan) {
         List<Port> portsByVlan = portRepository.findAllByVlan(vlan);
-        if (portsByVlan.isEmpty()){
-            throw new RuntimeException("No host has been found by this vlan! :(");
+        if (portsByVlan.isEmpty()) {
+            throw new RuntimeException("No ports have been found by this vlan! :(");
         }
-        else {
-            return portsByVlan.stream()
-                    .map(Port::getHost)
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-        }
+        List<Host> hostsByVlan = portsByVlan.stream()
+                .map(Port::getHost)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        if (!hostsByVlan.isEmpty()) {
+            return hostsByVlan;
+        } else throw new RuntimeException("No host has been found by this vlan! :(");
     }
 
     public Host getHostByIp(String ip){
