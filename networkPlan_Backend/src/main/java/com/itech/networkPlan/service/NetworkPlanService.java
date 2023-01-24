@@ -68,9 +68,14 @@ public class NetworkPlanService {
     public List<Host> getHostsByDepartmentId(Integer networkId) {
         Optional<Department> departmentById = departmentRepository.findById(networkId);
         if (departmentById.isPresent()) {
-            return hostRepository.findAllByDepartment(departmentById.get());
+            List<Host> allHostsByDepartment = hostRepository.findAllByDepartment(departmentById.get());
+            if (!allHostsByDepartment.isEmpty()){
+                return allHostsByDepartment;
+            }else {
+                throw new RuntimeException("No hosts have been found by this id! :(");
+            }
         } else {
-            throw new RuntimeException("No hosts have been found by this id! :(");
+            throw new RuntimeException("No department has been found by this id! :(");
         }
     }
 
