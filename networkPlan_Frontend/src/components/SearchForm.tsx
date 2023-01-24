@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {ChangeEvent, Component} from "react";
 
 interface DeviceListState {
     devices: any[];
@@ -7,6 +7,8 @@ interface DeviceListState {
     hosts: any[];
     searchQuery: string;
     filteredData: any[];
+    filterBy: string;
+    selectedEndpoint: string;
 }
 
 class DeviceList extends Component {
@@ -17,9 +19,96 @@ class DeviceList extends Component {
         hosts: [],
         searchQuery: "",
         filteredData: [],
+        filterBy: "vlan",
+        selectedEndpoint: "",
     };
 
     async componentDidMount() {
+        if (this.state.selectedEndpoint === 'networks') {
+            try {
+                const response = await fetch("http://localhost:8080/api/network/networks");
+                const data = await response.json();
+                this.setState({ devices: data });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        if (this.state.selectedEndpoint === 'ports') {
+            try {
+                const response = await fetch("http://localhost:8080/api/network/ports");
+                const data = await response.json();
+                console.log(data);
+                this.setState({ ports: data });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        if (this.state.selectedEndpoint === 'switches') {
+            try {
+                const response = await fetch("http://localhost:8080/api/network/switches");
+                const data = await response.json();
+                console.log(data);
+                this.setState({ switches: data });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
+
+    filterDataByVlan = async () => {
+        try {
+            const response = await fetch(
+                "http://localhost:8080/api/network/hosts-by-vlan?vlan=" + this.state.searchQuery
+            );
+            console.log(this.state.searchQuery)
+            const data = await response.json();
+            this.setState({ filteredData: data });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    filterDataBySwitchId = async () => {
+        try {
+            const response = await fetch(
+                "http://localhost:8080/api/network/hosts-by-switch?switchId=" + this.state.searchQuery
+            );
+            console.log(this.state.searchQuery)
+            const data = await response.json();
+            this.setState({ filteredData: data });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        this.setState({searchQuery: event.target.value});
+    }
+
+    handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({filterBy: event.target.value});
+    }
+
+    async filterData() {
+        try {
+            let response;
+            if (this.state.filterBy === 'vlan') {
+                response = await fetch(
+                    `http://localhost:8080/api/network/hosts-by-vlan?vlan=${this.state.searchQuery}`
+                );
+            } else {
+                response = await fetch(
+                    `http://localhost:8080/api/network/hosts-by-switch?switchId=${this.state.searchQuery}`
+                );
+            }
+            const data = await response.json();
+            this.setState({ filteredData: data });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async updateNetworkData() {
         try {
             const response = await fetch("http://localhost:8080/api/network/networks");
             const data = await response.json();
@@ -27,59 +116,24 @@ class DeviceList extends Component {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    async updatePortData() {
         try {
             const response = await fetch("http://localhost:8080/api/network/ports");
             const data = await response.json();
-            console.log(data);
             this.setState({ ports: data });
         } catch (error) {
             console.log(error);
         }
+    }
+
+    async updateSwitchData() {
         try {
             const response = await fetch("http://localhost:8080/api/network/switches");
             const data = await response.json();
             console.log(data);
             this.setState({ switches: data });
-        } catch (error) {
-            console.log(error);
-        }
-        try {
-            const response = await fetch(
-                `http://localhost:8080/api/network/hosts-by-vlan?vlan=${this.state.searchQuery}`
-            );
-            const data = await response.json();
-            console.log(data);
-            this.setState({ hosts: data });
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({searchQuery: event.target.value});
-    }
-
-    async filterDataByVlan() {
-        try {
-            const response = await fetch(
-                "http://localhost:8080/api/network/hosts-by-vlan?vlan=" + this.state.searchQuery
-            );
-            console.log(this.state.searchQuery)
-            const data = await response.json();
-            this.setState({ filteredData: data, isVlan: true });
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    async filterDataBySwitchId() {
-        try {
-            const response = await fetch(
-                "http://localhost:8080/api/network/hosts-by-switch?switchId=" + this.state.searchQuery
-            );
-            console.log(this.state.searchQuery)
-            const data = await response.json();
-            this.setState({ filteredData: data, isVlan: false });
         } catch (error) {
             console.log(error);
         }
@@ -100,12 +154,15 @@ class DeviceList extends Component {
         );
         return (
             <div>
-                <input
-                    type="text"
-                    placeholder="Enter VLAN"
-                    onChange={this.handleChange}
-                />
-                <button onClick={() => this.filterDataByVlan()}>Filter</button>
+                <select onChange={this.handleChange}>
+                    <option value="">Select an option</option>
+                    <option value="VLAN30">VLAN 30</option>
+                    <option value="VLAN20">VLAN 20</option>
+                    <option value="1">Switch 1</option>
+                    <option value="switch2">Switch 2</option>
+                </select>
+                <button onClick={() => this.filterDataByVlan()}>Filter by VLAN</button>
+                <button onClick={() => this.filterDataBySwitchId()}>Filter by Switch ID</button>
                 {this.state.filteredData.map((data) => (
                     <div key={data.id}>
                         <p>Name: {data.name}</p>
@@ -113,20 +170,18 @@ class DeviceList extends Component {
                         <br />
                     </div>
                 ))}
-                <input
-                    type="text"
-                    placeholder="Enter SwitchID"
-                    onChange={this.handleChange}
-                />
-                <button onClick={() => this.filterDataBySwitchId()}>Filter</button>
-                {this.state.filteredData.map((data) => (
-                    <div key={data.id}>
-                        <p>Name: {data.name}</p>
-                        <p>VLAN: {data.vlan}</p>
-                        <p>Location: {data.location}</p>
-                        <br />
-                    </div>
-                ))}
+                <button onClick={() => this.updateNetworkData}>Update Network Data</button>
+                {this.state.devices.map((devices) => {
+                    return <div>{devices.name}</div>;
+                })}
+                <button onClick={() => this.updatePortData()}>Update Port Data</button>
+                {this.state.ports.map((port) => {
+                    return <div>{port.name}</div>;
+                })}
+                <button onClick={() => this.updateSwitchData}>Update Switch Data</button>
+                {this.state.switches.map((switches) => {
+                    return <div>{switches.name}</div>;
+                })}
                 {filteredDevices.map((device) => (
                     <div key={device.id}>
                         <p>Department: {device.id}</p>
