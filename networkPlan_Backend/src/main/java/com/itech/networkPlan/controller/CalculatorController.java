@@ -18,6 +18,7 @@ public class CalculatorController {
 
     @PostMapping()
     public ResponseEntity<HashMap<String, String>> calculateSubnetsAndReturnNewGeneratedSubnets(@RequestBody NewCalculateRequest request){
+        subnets.clear();
         String ip = request.ip();
         int cidr = Integer.parseInt(request.mask());
         int amount = request.amount();
@@ -26,7 +27,7 @@ public class CalculatorController {
     }
 
     public static HashMap<String, String> calculateSubnets(String ip, int cidr, int amount){
-        boolean debug = true;
+        boolean debug = false;
         String subnetMask = getSubnetByCidr(cidr);
         char[] binaryIp = convertIpStringToCharBinaryArray(ip);
         char[] binaryMask = convertIpStringToCharBinaryArray(subnetMask);
@@ -165,9 +166,6 @@ public class CalculatorController {
     }
 
     public static int getAmountOfBitsBorrowed(int amount){
-        while(amount % 2 != 0){
-            amount++;
-        }
         return switch(amount){
             case 2 -> 1;
             case 4 -> 2;
