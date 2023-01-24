@@ -44,6 +44,16 @@
   overflow: scroll;
 }
 
+.buttons{
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-weight: 700;
+  color: white;
+  border: none
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

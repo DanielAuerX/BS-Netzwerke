@@ -15,6 +15,7 @@ export interface IState {
 }
 
 function App() {
+    document.title = 'äosTECH'
   return (
       <BrowserRouter>
         <Routes>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IState as Props } from "../App";
 import List from "./IpList";
+import logo from './logo.png';
 
 interface IProps {
     setAddresses: React.Dispatch<React.SetStateAction<Props["addresses"]>>
@@ -21,8 +22,18 @@ function DisplayIps() {
     }, []);
 
     return (
-        <div>
-            <h1>IP Addresses</h1>
+        <div className="App">
+            <h1>Welcome to GEEK Fitness GmbH</h1>
+            <img src={logo} alt="Logo" style={{width: '250px', height: '180px'}}/>
+            <p>What do you want to do?</p>
+            <div className="buttons">
+            <a href="/form">
+                <button>Submask Calculator</button>
+            </a>
+            <a href="/search">
+                <button>Search network information</button>
+            </a>
+            </div>
             <ul>
                 {ips.map((ip) => (
                     <li key={ip}>{ip}</li>
