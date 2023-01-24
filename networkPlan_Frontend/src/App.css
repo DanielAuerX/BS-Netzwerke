@@ -114,6 +114,12 @@ th {
   margin-bottom: 20px;
 }
 
+.logo-img {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+}
+
 
 @keyframes App-logo-spin {
   from {
