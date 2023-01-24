@@ -8,6 +8,7 @@ function App() {
     const [error, setError] = useState('');
 
     async function handleSubmit(event: SyntheticEvent){
+        if (!ip || !mask || !amount) return;
         event.preventDefault();
         setError('');
         await fetch('http://localhost:8080/api/calculator', {
