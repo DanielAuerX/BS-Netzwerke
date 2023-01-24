@@ -170,7 +170,7 @@ class DeviceList extends Component {
                         <br />
                     </div>
                 ))}
-                <button onClick={() => this.updateNetworkData}>Update Network Data</button>
+                <button onClick={() => this.updateNetworkData()}>Update Network Data</button>
                 {this.state.devices.map((devices) => {
                     return <div>{devices.name}</div>;
                 })}
@@ -178,7 +178,7 @@ class DeviceList extends Component {
                 {this.state.ports.map((port) => {
                     return <div>{port.name}</div>;
                 })}
-                <button onClick={() => this.updateSwitchData}>Update Switch Data</button>
+                <button onClick={() => this.updateSwitchData()}>Update Switch Data</button>
                 {this.state.switches.map((switches) => {
                     return <div>{switches.name}</div>;
                 })}
