@@ -28,7 +28,7 @@ class DeviceList extends Component {
             try {
                 const response = await fetch("http://localhost:8080/api/network/networks");
                 const data = await response.json();
-                this.setState({ devices: data });
+                this.setState({devices: data});
             } catch (error) {
                 console.log(error);
             }
@@ -38,7 +38,7 @@ class DeviceList extends Component {
                 const response = await fetch("http://localhost:8080/api/network/ports");
                 const data = await response.json();
                 console.log(data);
-                this.setState({ ports: data });
+                this.setState({ports: data});
             } catch (error) {
                 console.log(error);
             }
@@ -48,7 +48,7 @@ class DeviceList extends Component {
                 const response = await fetch("http://localhost:8080/api/network/switches");
                 const data = await response.json();
                 console.log(data);
-                this.setState({ switches: data });
+                this.setState({switches: data});
             } catch (error) {
                 console.log(error);
             }
@@ -62,7 +62,7 @@ class DeviceList extends Component {
             );
             console.log(this.state.searchQuery)
             const data = await response.json();
-            this.setState({ filteredData: data });
+            this.setState({filteredData: data});
         } catch (error) {
             console.log(error);
         }
@@ -75,7 +75,7 @@ class DeviceList extends Component {
             );
             console.log(this.state.searchQuery)
             const data = await response.json();
-            this.setState({ filteredData: data });
+            this.setState({filteredData: data});
         } catch (error) {
             console.log(error);
         }
@@ -102,7 +102,7 @@ class DeviceList extends Component {
                 );
             }
             const data = await response.json();
-            this.setState({ filteredData: data });
+            this.setState({filteredData: data});
         } catch (error) {
             console.log(error);
         }
@@ -112,7 +112,7 @@ class DeviceList extends Component {
         try {
             const response = await fetch("http://localhost:8080/api/network/networks");
             const data = await response.json();
-            this.setState({ devices: data });
+            this.setState({devices: data});
         } catch (error) {
             console.log(error);
         }
@@ -122,7 +122,7 @@ class DeviceList extends Component {
         try {
             const response = await fetch("http://localhost:8080/api/network/ports");
             const data = await response.json();
-            this.setState({ ports: data });
+            this.setState({ports: data});
         } catch (error) {
             console.log(error);
         }
@@ -133,7 +133,7 @@ class DeviceList extends Component {
             const response = await fetch("http://localhost:8080/api/network/switches");
             const data = await response.json();
             console.log(data);
-            this.setState({ switches: data });
+            this.setState({switches: data});
         } catch (error) {
             console.log(error);
         }
@@ -153,32 +153,38 @@ class DeviceList extends Component {
             host.vlan.includes(this.state.searchQuery)
         );
         return (
-            <div>
-                <select onChange={this.handleChange}>
+            <div className="App">
+                <h1 className="fancy-h1">Select a search</h1>
+                <select onChange={this.handleChange} className="fancy-button">
                     <option value="">Select an option</option>
                     <option value="VLAN30">VLAN 30</option>
                     <option value="VLAN20">VLAN 20</option>
                     <option value="1">Switch 1</option>
                     <option value="switch2">Switch 2</option>
                 </select>
-                <button onClick={() => this.filterDataByVlan()}>Filter by VLAN</button>
-                <button onClick={() => this.filterDataBySwitchId()}>Filter by Switch ID</button>
+                <button onClick={() => this.filterDataByVlan()} className="fancy-button">Filter by VLAN</button>
+                <button onClick={() => this.filterDataBySwitchId()} className="fancy-button">Filter by Switch ID
+                </button>
                 {this.state.filteredData.map((data) => (
                     <div key={data.id}>
                         <p>Name: {data.name}</p>
                         <p>VLAN: {this.state.searchQuery}</p>
-                        <br />
+                        <br/>
                     </div>
                 ))}
-                <button onClick={() => this.updateNetworkData()}>Update Network Data</button>
+                <button
+                    onClick={() => this.updateNetworkData()}
+                    className="fancy-button"
+                >Update Network Data
+                </button>
                 {this.state.devices.map((devices) => {
                     return <div>{devices.name}</div>;
                 })}
-                <button onClick={() => this.updatePortData()}>Update Port Data</button>
+                <button onClick={() => this.updatePortData()} className="fancy-button">Update Port Data</button>
                 {this.state.ports.map((port) => {
                     return <div>{port.name}</div>;
                 })}
-                <button onClick={() => this.updateSwitchData()}>Update Switch Data</button>
+                <button onClick={() => this.updateSwitchData()} className="fancy-button">Update Switch Data</button>
                 {this.state.switches.map((switches) => {
                     return <div>{switches.name}</div>;
                 })}
@@ -187,12 +193,12 @@ class DeviceList extends Component {
                         <p>Department: {device.id}</p>
                         <p>Name: {device.name}</p>
                         <p>Location: {device.location}</p>
-                        <br />
+                        <br/>
                     </div>
                 ))}
                 {filteredPorts.map((port) => (
                     <div>
-                        <br />
+                        <br/>
                         <p>Port: {port.id}</p>
                         <p>Switch ID: {port.switchId.name}</p>
                         <p>Port Name: {port.name}</p>
@@ -211,7 +217,7 @@ class DeviceList extends Component {
                                 </p>
                             </>
                         )}
-                        <br />
+                        <br/>
                     </div>
                 ))}
                 {filteredSwitches.map((zwitch) => (
@@ -219,7 +225,7 @@ class DeviceList extends Component {
                         <p>Switch: {zwitch.name}</p>
                         <p>Switch ID: {zwitch.id}</p>
                         <p>Location: {zwitch.location}</p>
-                        <br />
+                        <br/>
                     </div>
                 ))}
                 {filteredHosts.map((host) => (
@@ -229,7 +235,7 @@ class DeviceList extends Component {
                         <p>IP: {host.ip}</p>
                         <p>System: {host.system}</p>
                         <p>Department: {host.department.name}</p>
-                        <br />
+                        <br/>
                     </div>
                 ))}
             </div>
