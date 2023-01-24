@@ -65,7 +65,7 @@ class DeviceList extends Component {
             device.name.includes(this.state.searchQuery)
         );
         const filteredPorts = this.state.ports.filter(port =>
-            port.name.includes(this.state.searchQuery)
+            port.vlan.includes(this.state.searchQuery)
         );
         const filteredSwitches = this.state.switches.filter(zwitch =>
             zwitch.name.includes(this.state.searchQuery)
@@ -77,7 +77,9 @@ class DeviceList extends Component {
             <div>
                 <input
                     type="text"
-                    placeholder="Search by VLAN"/>
+                    placeholder="Search by"
+                    onChange={this.handleSearch}/>
+
                 {filteredDevices.map(device => (
                     <div key={device.id}>
                         <p>Department: {device.id}</p>
