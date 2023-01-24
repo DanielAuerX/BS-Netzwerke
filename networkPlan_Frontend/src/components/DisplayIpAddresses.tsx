@@ -23,9 +23,9 @@ function DisplayIps() {
 
     return (
         <div className="App">
-            <h1>Welcome to GEEK Fitness GmbH</h1>
+            <h1 className="fancy-h1">Welcome to GEEK Fitness GmbH</h1>
             <img src={logo} alt="Logo" style={{width: '250px', height: '180px'}}/>
-            <p>What do you want to do?</p>
+            <p className="fancy-h2">What do you want to do?</p>
             <a href="/form">
                 <button className="fancy-button">Submask Calculator</button>
             </a>

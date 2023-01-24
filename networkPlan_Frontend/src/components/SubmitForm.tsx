@@ -35,8 +35,8 @@ function App() {
 
     return (
         <div className="App">
-            <h1>Subnet Calculator</h1>
-            <h2>Enter the values</h2>
+            <h1 className="fancy-h1">Subnet Calculator</h1>
+            <h2 className="fancy-h2">Enter the values</h2>
             <form onSubmit={handleSubmit}>
                 <label>
                     <input

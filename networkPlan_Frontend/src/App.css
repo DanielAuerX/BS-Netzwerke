@@ -100,6 +100,20 @@ th {
   color: white; /* White text for header cells */
 }
 
+.fancy-h1{
+  font-size: 2em;
+  text-align: center;
+  color: #4CAF50;
+  margin-bottom: 20px;
+}
+
+.fancy-h2{
+  font-size: 1.2em;
+  text-align: center;
+  color: #4CAF50;
+  margin-bottom: 20px;
+}
+
 
 @keyframes App-logo-spin {
   from {
