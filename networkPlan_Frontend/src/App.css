@@ -106,7 +106,7 @@ th {
   background-color: #f2f2f2; /* Light gray background */
   border: 1px solid #ccc; /* Gray border */
   border-collapse: collapse; /* Remove cell spacing */
-  width: 40%; /* Set table width */
+  width: 30%; /* Set table width */
 }
 
 .fancy-h1{

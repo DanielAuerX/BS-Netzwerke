@@ -9,7 +9,7 @@ interface DeviceListState {
     filteredData: any[];
     filterBy: string;
     selectedEndpoint: string;
-    showVlanMenu: boolean;
+    selectedOption: string;
 }
 
 class DeviceList extends Component {
@@ -22,7 +22,7 @@ class DeviceList extends Component {
         filteredData: [],
         filterBy: "vlan",
         selectedEndpoint: "",
-        showVlanMenu: false,
+        selectedOption: ""
     };
 
     async componentDidMount() {
@@ -60,21 +60,6 @@ class DeviceList extends Component {
         }
     }
 
-    filterDataByVlan = async () => {
-        try {
-            const response = await fetch(
-                "http://localhost:8080/api/network/hosts-by-vlan?vlan=" + this.state.searchQuery
-            );
-            console.log(this.state.searchQuery)
-            const data = await response.json();
-            this.setState({devices: [], ports: [], switches: [], hosts: [], filteredData: []});
-            this.setState({filteredData: data});
-            console.log(data)
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     filterDataBySwitchId = async () => {
         try {
             const response = await fetch(
@@ -89,34 +74,64 @@ class DeviceList extends Component {
         }
     }
 
-    handleVlanMenuButtonClick = () => {
-        this.setState({ showVlanMenu: !this.state.showVlanMenu });
-    }
-
-    handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        this.setState({searchQuery: event.target.value});
-    }
-
-    handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({filterBy: event.target.value});
-    }
-
-    async filterData() {
-        try {
-            let response;
-            if (this.state.filterBy === 'vlan') {
-                response = await fetch(
-                    `http://localhost:8080/api/network/hosts-by-vlan?vlan=${this.state.searchQuery}`
+    handleSelectionVlan = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+        if (event && event.target) {
+            console.log(event.target.value)
+            try {
+                const response = await fetch(
+                    "http://localhost:8080/api/network/hosts-by-vlan?vlan=" + event.target.value
                 );
-            } else {
-                response = await fetch(
-                    `http://localhost:8080/api/network/hosts-by-switch?switchId=${this.state.searchQuery}`
-                );
+                console.log(this.state.searchQuery)
+                const data = await response.json();
+                this.setState({devices: [], ports: [], switches: [], hosts: [], filteredData: []});
+                this.setState({filteredData: data});
+                console.log(data)
+            } catch (error) {
+                console.log(error);
             }
-            const data = await response.json();
-            this.setState({filteredData: data});
-        } catch (error) {
-            console.log(error);
+        }
+    };
+
+    handleSelectionSwitch = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+        if (event && event.target) {
+            try {
+                const response = await fetch(
+                    "http://localhost:8080/api/network/hosts-by-switch?switchId=" + event.target.value
+                );
+                console.log(this.state.searchQuery)
+                const data = await response.json();
+                this.setState({devices: [], ports: [], switches: [], hosts: [], filteredData: []});
+                this.setState({filteredData: data});
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
+    handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        if (e.target.value === "allPorts") {
+            this.updatePortData();
+        }
+        if (e.target.value === "allSwitches") {
+            this.updateSwitchData();
+        }
+        if (e.target.value === "allDepartments") {
+            this.updateNetworkData();
+        }
+        if (e.target.value === "allHosts") {
+            this.updateHostData();
+        }
+        if (e.target.value === "hostsByVlan") {
+            // eslint-disable-next-line no-restricted-globals
+            // @ts-ignore
+            // eslint-disable-next-line no-restricted-globals
+            this.setState({ selectedOption: event.target.value });
+        }
+        if (e.target.value === "hostBySwitch") {
+            // eslint-disable-next-line no-restricted-globals
+            // @ts-ignore
+            // eslint-disable-next-line no-restricted-globals
+            this.setState({ selectedOption: event.target.value });
         }
     }
 
@@ -180,34 +195,35 @@ class DeviceList extends Component {
             <div className="App">
                 <h1 className="fancy-h1">Select a search</h1>
                 <select onChange={this.handleChange} className="fancy-button">
-                    <option value="">Select an option</option>
-                    <option value="VLAN30">VLAN 30</option>
-                    <option value="VLAN20">VLAN 20</option>
-                    <option value="1">Switch 1</option>
-                    <option value="2">Switch 2</option>
-                    <option value="3">Switch 3</option>
+                    <option value="">Select a search</option>
+                    <option value="allPorts">Find all ports</option>
+                    <option value="allSwitches">Find all switches</option>
+                    <option value="allDepartments">Find all departments</option>
+                    <option value="allHosts">Find all hosts</option>
+                    <option value="hostsByVlan">Find hosts by VLAN</option>
+                    <option value="hostBySwitch">Find hosts by switch ID</option>
                 </select>
-                <button onClick={() => this.filterDataByVlan()} className="fancy-button">Filter by VLAN</button>
-                <button onClick={() => this.filterDataBySwitchId()} className="fancy-button">Filter by Switch ID
-                </button>
-
-                <button
-                    onClick={() => this.updateNetworkData()}
-                    className="fancy-button"
-                >Update Department Data
-                </button>
-
-                <button onClick={() => this.updatePortData()} className="fancy-button">Update Port Data</button>
-
-                <button onClick={() => this.updateSwitchData()} className="fancy-button">Update Switch Data</button>
-
-                <button onClick={() => this.updateHostData()} className="fancy-button">Update Host Data</button>
+                {this.state.selectedOption === "hostsByVlan" && (
+                    <select onChange={this.handleSelectionVlan} className="fancy-button">
+                        <option value="">Select a VLAN</option>
+                        <option value="VLAN20">VLAN 20</option>
+                        <option value="VLAN30">VLAN 30</option>
+                    </select>
+                )}
+                {this.state.selectedOption === "hostBySwitch" && (
+                    <select onChange={this.handleSelectionSwitch} className="fancy-button">
+                        <option value="">Select the switch ID</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                )}
 
                 {this.state.filteredData.map((data) => (
                     <div key={data.id} className="search-table">
                         <p><strong>Host: {data.macId}</strong></p>
-                        <p>{data.name}</p>
-                        <p>{data.ip}</p>
+                        <p>Name: {data.name}</p>
+                        <p>IP: {data.ip}</p>
                         <p>{this.state.searchQuery}</p>
                         <br/>
                     </div>
@@ -226,8 +242,8 @@ class DeviceList extends Component {
                         <br/>
                         <p><strong>Port: {port.name}</strong></p>
                         <p>Switch ID: {port.switchId.name}</p>
-                        <p>Port VLAN: {port.vlan}</p>
-                        <p>Port Mode: {port.portMode}</p>
+                        <p>VLAN: {port.vlan}</p>
+                        <p>Mode: {port.portMode}</p>
                         {port.host && (
                             <>
                                 <p>Host: {port.host.name}</p>
@@ -239,7 +255,7 @@ class DeviceList extends Component {
                 {filteredSwitches.map((zwitch) => (
                     <div key={zwitch.id} className="search-table">
                         <p><strong>Switch: {zwitch.id}</strong></p>
-                        <p>{zwitch.name}</p>
+                        <p>Name: {zwitch.name}</p>
                         <br/>
                     </div>
                 ))}
