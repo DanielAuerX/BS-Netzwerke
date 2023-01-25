@@ -206,6 +206,7 @@ class DeviceList extends Component {
                 {this.state.selectedOption === "hostsByVlan" && (
                     <select onChange={this.handleSelectionVlan} className="fancy-button">
                         <option value="">Select a VLAN</option>
+                        <option value="VLAN10">VLAN 10</option>
                         <option value="VLAN20">VLAN 20</option>
                         <option value="VLAN30">VLAN 30</option>
                     </select>
